@@ -1,3 +1,6 @@
+using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
+
 namespace ghibli_suggestion_api.Middleware;
 
 public class ErrorHandlingMiddleware
@@ -22,28 +25,16 @@ public class ErrorHandlingMiddleware
             _logger.LogError(ex, $"Unhandled exception occured: {context.Request.Path}");
             
             context.Response.ContentType = "application/json";
+            context.Response.StatusCode = 500;
 
-            var statusCode = ex switch
+            var problem = new ProblemDetails
             {
-                ArgumentException => StatusCodes.Status400BadRequest,
-                KeyNotFoundException => StatusCodes.Status404NotFound,
-                _ => StatusCodes.Status500InternalServerError,
+                Title = "An unhandled exception occured",
+                Status = StatusCodes.Status500InternalServerError,
+                Detail = "An unhandled exception occured"
             };
             
-            context.Response.StatusCode = statusCode;
-
-            var response = new
-            {
-                status = statusCode,
-                message = statusCode switch
-                {
-                    StatusCodes.Status400BadRequest => "Bad Request",
-                    StatusCodes.Status404NotFound => "Not Found",
-                    _ => "Internal Server Error",
-                }
-            };
-            
-            await context.Response.WriteAsJsonAsync(response);
+            await context.Response.WriteAsync(JsonSerializer.Serialize(problem));
         }
     }
 }
