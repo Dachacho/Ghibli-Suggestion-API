@@ -5,5 +5,5 @@ namespace ghibli_suggestion_api.Clients;
 public interface IGhibliApiClient
 {
     Task<IEnumerable<GhibliFilm>?> GetFilmsAsync();
-    Task<GhibliFilm?> GetFilmAsync(int id);
+    Task<GhibliFilm?> GetFilmAsync(string id);
 }

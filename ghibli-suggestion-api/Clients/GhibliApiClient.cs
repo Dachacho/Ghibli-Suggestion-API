@@ -22,7 +22,7 @@ public class GhibliApiClient : IGhibliApiClient
             new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
     }
 
-    public async Task<GhibliFilm?> GetFilmAsync(int id)
+    public async Task<GhibliFilm?> GetFilmAsync(string id)
     {
         var response = await _client.GetAsync($"/films/{id}");
         response.EnsureSuccessStatusCode();

@@ -19,7 +19,7 @@ public class GhibliService : IGhibliService
         return films?.Select(FilmMapper.ToDto);
     }
 
-    public async Task<FilmDto?> GetFilmAsync(int id)
+    public async Task<FilmDto?> GetFilmAsync(string id)
     {
         var film = await _client.GetFilmAsync(id);
         return film != null ? FilmMapper.ToDto(film) : null;

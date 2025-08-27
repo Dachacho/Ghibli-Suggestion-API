@@ -7,24 +7,33 @@ public static class FilmMapper
     public static FilmDto ToDto(GhibliFilm film)
     {
         ArgumentNullException.ThrowIfNull(film);
-
-        var score = int.Parse(film.RtScore);
-        var runningTime = int.Parse(film.RunningTime);
         
-        var lengthCategory = runningTime < 90 ? "short" :
-            runningTime <= 120 ? "medium" : "long";
+        int score = int.TryParse(film.RtScore?.Trim(), out var s) ? s : 0;
+        int runningTime = int.TryParse(film.RunningTime?.Trim(), out var rt) ? rt : 0;
+
+        Console.WriteLine($"Film: {film.Title}, RtScore (raw): '{film.RtScore}', parsed: {score}, RunningTime (raw): '{film.RunningTime}', parsed: {runningTime}");
+        
+        var lengthCategory = runningTime switch
+        {
+            < 70 => "short",
+            <= 100 => "medium",
+            _ => "long"
+        };
 
         string mood;
-        if (runningTime > 120 && score < 80)
-            mood = "thoughtful";
-        else if (score > 90 && runningTime <= 90)
-            mood = "lighthearted";
-        else
-            mood = "adventurous";
+        if (score >= 90) mood = "exciting";
+        else if (score >= 70) mood = "cheerful";
+        else if (score >= 50) mood = "calm";
+        else mood = "thoughtful";
 
-        var pairing = mood == "thoughtful" ? "alone" :
-            mood == "lighthearted" ? "friends" :
-            "family";
+        string pairing = mood switch
+        {
+            "thoughtful" => "alone",
+            "cheerful" => "friends",
+            "exciting" => "family",
+            "calm" => "alone",
+            _ => "anyone"
+        };
 
         return new FilmDto
         {
