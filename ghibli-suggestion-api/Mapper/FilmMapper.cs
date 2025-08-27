@@ -26,14 +26,7 @@ public static class FilmMapper
             _ => "thoughtful"
         };
 
-        var pairing = mood switch
-        {
-            "thoughtful" => "alone",
-            "cheerful" => "friends",
-            "exciting" => "family",
-            "calm" => "alone",
-            _ => "anyone"
-        };
+        var pairing = film.Director.Contains("Miyazaki") ? "friends/family" : "alone";
 
         return new FilmDto
         {
