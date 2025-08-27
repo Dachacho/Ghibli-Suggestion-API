@@ -6,5 +6,5 @@ public interface IGhibliService
 {
     Task<IEnumerable<FilmDto>?> GetFilmsAsync();
     Task<FilmDto?> GetFilmAsync(int id);
-    Task<IEnumerable<FilmDto>?> SuggestFilmAsync(FilmDto filmDto);
+    Task<IEnumerable<FilmDto>?> SuggestFilmAsync(string mood, string length, string pairing);
 }   

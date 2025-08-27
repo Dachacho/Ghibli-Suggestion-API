@@ -1,4 +1,5 @@
 using ghibli_suggestion_api.Clients;
+using ghibli_suggestion_api.Mapper;
 using ghibli_suggestion_api.Models;
 
 namespace ghibli_suggestion_api.Services;
@@ -12,18 +13,34 @@ public class GhibliService : IGhibliService
         _client = client;
     }
     
-    public Task<IEnumerable<FilmDto>?> GetFilmsAsync()
+    public async Task<IEnumerable<FilmDto>?> GetFilmsAsync()
     {
-        throw new NotImplementedException();
+        var films = await _client.GetFilmsAsync();
+        return films?.Select(FilmMapper.ToDto);
     }
 
-    public Task<FilmDto?> GetFilmAsync(int id)
+    public async Task<FilmDto?> GetFilmAsync(int id)
     {
-        throw new NotImplementedException();
+        var film = await _client.GetFilmAsync(id);
+        return film != null ? FilmMapper.ToDto(film) : null;
     }
 
-    public Task<IEnumerable<FilmDto>?> SuggestFilmAsync(FilmDto filmDto)
+    public async Task<IEnumerable<FilmDto>?> SuggestFilmAsync(string mood, string length, string pairing)
     {
-        throw new NotImplementedException();
+        var films = await _client.GetFilmsAsync();
+        var dtos = films?.Select(FilmMapper.ToDto);
+
+        if (dtos != null)
+        {
+            var filtered = dtos
+                .Where(f => string.IsNullOrEmpty(mood) || f.Mood == mood)
+                .Where(f => string.IsNullOrEmpty(length) || f.LengthCategory == length)
+                .Where(f => string.IsNullOrEmpty(pairing) || f.Pairing == pairing);
+        
+            var random =  new Random();
+            return filtered.OrderBy(_ => random.Next()).Take(3);
+        }
+
+        return [];
     }
 }
