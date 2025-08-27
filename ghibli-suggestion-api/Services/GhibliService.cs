@@ -1,22 +1,29 @@
 using ghibli_suggestion_api.Clients;
 using ghibli_suggestion_api.Mapper;
 using ghibli_suggestion_api.Models;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace ghibli_suggestion_api.Services;
 
 public class GhibliService : IGhibliService
 {
     private readonly IGhibliApiClient _client;
-
-    public GhibliService(IGhibliApiClient client)
+    private readonly IMemoryCache _cache;
+    
+    public GhibliService(IGhibliApiClient client,  IMemoryCache cache)
     {
         _client = client;
+        _cache = cache;
     }
-    
+
     public async Task<IEnumerable<FilmDto>?> GetFilmsAsync()
     {
-        var films = await _client.GetFilmsAsync();
-        return films?.Select(FilmMapper.ToDto);
+        return await _cache.GetOrCreateAsync("all_films", async entry =>
+        {
+            Console.WriteLine("getting movies from api");
+            var films = await _client.GetFilmsAsync();
+            return films?.Select(FilmMapper.ToDto);
+        });
     }
 
     public async Task<FilmDto?> GetFilmAsync(string id)
