@@ -1,8 +1,3 @@
-using ghibli_suggestion_api.Clients;
-using ghibli_suggestion_api.Mapper;
-using ghibli_suggestion_api.Models;
-using Microsoft.Extensions.Caching.Memory;
-
 namespace ghibli_suggestion_api.Services;
 
 public class GhibliService : IGhibliService

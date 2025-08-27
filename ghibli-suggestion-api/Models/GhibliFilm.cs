@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-
 namespace ghibli_suggestion_api.Models;
 
 public class GhibliFilm

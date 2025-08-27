@@ -1,7 +1,3 @@
-using ghibli_suggestion_api.Clients;
-using ghibli_suggestion_api.Middleware;
-using ghibli_suggestion_api.Services;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();

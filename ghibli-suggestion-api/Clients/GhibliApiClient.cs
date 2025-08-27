@@ -1,6 +1,3 @@
-using System.Text.Json;
-using ghibli_suggestion_api.Models;
-
 namespace ghibli_suggestion_api.Clients;
 
 public class GhibliApiClient : IGhibliApiClient

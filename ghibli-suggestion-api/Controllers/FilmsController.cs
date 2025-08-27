@@ -1,7 +1,3 @@
-using ghibli_suggestion_api.Models;
-using ghibli_suggestion_api.Services;
-using Microsoft.AspNetCore.Mvc;
-
 namespace ghibli_suggestion_api.Controllers;
 
 [ApiController]
