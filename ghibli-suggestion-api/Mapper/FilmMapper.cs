@@ -11,22 +11,10 @@ public static class FilmMapper
         var score = int.TryParse(film.RtScore?.Trim(), out var s) ? s : 0;
         var runningTime = int.TryParse(film.RunningTime?.Trim(), out var rt) ? rt : 0;
 
-        var lengthCategory = runningTime switch
-        {
-            < 90 => "short",
-            <= 120 => "medium",
-            _ => "long"
-        };
+        var lengthCategory = GetLengthCategory(runningTime);
+        var mood = GetMood(score);
 
-        var mood = score switch
-        {
-            >= 95 => "exciting",
-            >= 70 => "cheerful",
-            >= 50 => "calm",
-            _ => "thoughtful"
-        };
-
-        var pairing = film.Director.Contains("Miyazaki") ? "friends/family" : "alone";
+        var pairing = GetPairing(film.Director);
 
         return new FilmDto
         {
@@ -37,4 +25,24 @@ public static class FilmMapper
             Pairing = pairing,
         };
     }
+    
+    private static string GetLengthCategory(int runningTime) =>
+        runningTime switch
+        {
+            < 90 => "short",
+            <= 120 => "medium",
+            _ => "long"
+        };
+
+    private static string GetMood(int score) =>
+        score switch
+        {
+            >= 95 => "exciting",
+            >= 70 => "cheerful",
+            >= 50 => "calm",
+            _ => "thoughtful"
+        };
+
+    private static string GetPairing(string director) =>
+        director.Contains("Miyazaki") ? "friends/family" : "alone";
 }
