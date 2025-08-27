@@ -27,7 +27,7 @@ public class GhibliService : IGhibliService
         return film != null ? FilmMapper.ToDto(film) : null;
     }
 
-    public async Task<IEnumerable<FilmDto>?> SuggestFilmAsync(string? mood, string? length, string? pairing)
+    public async Task<IEnumerable<FilmDto>?> SuggestFilmAsync(FilmSuggestionQuery query)
     {
         var films = await _client.GetFilmsAsync();
         var dtos = films?.Select(FilmMapper.ToDto);
@@ -35,9 +35,9 @@ public class GhibliService : IGhibliService
         if (dtos != null)
         {
             var filtered = dtos
-                .Where(f => string.IsNullOrEmpty(mood) || f.Mood == mood)
-                .Where(f => string.IsNullOrEmpty(length) || f.LengthCategory == length)
-                .Where(f => string.IsNullOrEmpty(pairing) || f.Pairing == pairing);
+                .Where(f => string.IsNullOrEmpty(query.Mood) || f.Mood == query.Mood)
+                .Where(f => string.IsNullOrEmpty(query.Length) || f.LengthCategory == query.Length)
+                .Where(f => string.IsNullOrEmpty(query.Pairing) || f.Pairing == query.Pairing);
         
             var random =  new Random();
             return filtered.OrderBy(_ => random.Next()).Take(3);
