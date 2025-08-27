@@ -8,25 +8,25 @@ public static class FilmMapper
     {
         ArgumentNullException.ThrowIfNull(film);
         
-        int score = int.TryParse(film.RtScore?.Trim(), out var s) ? s : 0;
-        int runningTime = int.TryParse(film.RunningTime?.Trim(), out var rt) ? rt : 0;
+        var score = int.TryParse(film.RtScore?.Trim(), out var s) ? s : 0;
+        var runningTime = int.TryParse(film.RunningTime?.Trim(), out var rt) ? rt : 0;
 
-        Console.WriteLine($"Film: {film.Title}, RtScore (raw): '{film.RtScore}', parsed: {score}, RunningTime (raw): '{film.RunningTime}', parsed: {runningTime}");
-        
         var lengthCategory = runningTime switch
         {
-            < 70 => "short",
-            <= 100 => "medium",
+            < 90 => "short",
+            <= 120 => "medium",
             _ => "long"
         };
 
-        string mood;
-        if (score >= 90) mood = "exciting";
-        else if (score >= 70) mood = "cheerful";
-        else if (score >= 50) mood = "calm";
-        else mood = "thoughtful";
+        var mood = score switch
+        {
+            >= 95 => "exciting",
+            >= 70 => "cheerful",
+            >= 50 => "calm",
+            _ => "thoughtful"
+        };
 
-        string pairing = mood switch
+        var pairing = mood switch
         {
             "thoughtful" => "alone",
             "cheerful" => "friends",

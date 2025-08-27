@@ -31,7 +31,7 @@ public class FilmsController : ControllerBase
 
     [HttpGet("suggest")]
     public async Task<ActionResult<IEnumerable<FilmDto>>> SuggestFilmAsync(
-        [FromQuery] string mood, [FromQuery] string length, [FromQuery] string pairing)
+        [FromQuery] string? mood = null, [FromQuery] string? length = null, [FromQuery] string? pairing = null)
     {
         var suggestion = await _ghibliService.SuggestFilmAsync(mood, length, pairing);
         return Ok(suggestion);

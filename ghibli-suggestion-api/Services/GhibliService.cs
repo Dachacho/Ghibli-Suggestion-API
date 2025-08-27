@@ -25,7 +25,7 @@ public class GhibliService : IGhibliService
         return film != null ? FilmMapper.ToDto(film) : null;
     }
 
-    public async Task<IEnumerable<FilmDto>?> SuggestFilmAsync(string mood, string length, string pairing)
+    public async Task<IEnumerable<FilmDto>?> SuggestFilmAsync(string? mood, string? length, string? pairing)
     {
         var films = await _client.GetFilmsAsync();
         var dtos = films?.Select(FilmMapper.ToDto);
