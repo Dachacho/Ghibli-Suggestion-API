@@ -15,7 +15,7 @@ builder.Services.AddHttpClient<IGhibliApiClient, GhibliApiClient>(client =>
     client.BaseAddress = new Uri("https://ghibliapi.vercel.app/");
 });
 
-//builder.Services.AddScoped<IGhibliService, GhibliService>();
+builder.Services.AddScoped<IGhibliService, GhibliService>();
 
 var app = builder.Build();
 
